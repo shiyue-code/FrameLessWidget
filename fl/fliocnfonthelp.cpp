@@ -5,7 +5,7 @@
 
 #include "fliocnfonthelp.h"
 
-const QString awesomFontPath = ":/awesome-font/awesomFont/fontawesome-free-5.14.0/fontawesome-free-5.14.0-desktop/otfs/Font Awesome 5 Free-Solid-900.otf";
+const QString awesomFontPath = ":/awesome-font/awesomFont/fontawesom-free-5.14.0-desktop/otfs/Font Awesome 5 Free-Solid-900.otf";
 
 FLIocnfontHelp *FLIocnfontHelp::instance()
 {

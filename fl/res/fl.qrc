@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/awesome-font">
-        <file>awesomFont/fontawesome-free-5.14.0/fontawesome-free-5.14.0-desktop/otfs/Font Awesome 5 Brands-Regular-400.otf</file>
-        <file>awesomFont/fontawesome-free-5.14.0/fontawesome-free-5.14.0-desktop/otfs/Font Awesome 5 Free-Regular-400.otf</file>
-        <file>awesomFont/fontawesome-free-5.14.0/fontawesome-free-5.14.0-desktop/otfs/Font Awesome 5 Free-Solid-900.otf</file>
+        <file>awesomFont/fontawesom-free-5.14.0-desktop/otfs/Font Awesome 5 Brands-Regular-400.otf</file>
+        <file>awesomFont/fontawesom-free-5.14.0-desktop/otfs/Font Awesome 5 Free-Regular-400.otf</file>
+        <file>awesomFont/fontawesom-free-5.14.0-desktop/otfs/Font Awesome 5 Free-Solid-900.otf</file>
     </qresource>
 </RCC>
