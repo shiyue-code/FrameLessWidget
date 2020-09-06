@@ -81,6 +81,13 @@ public:
             connect(m_title, SIGNAL(clk_min()), this, SLOT(onMin()));
             connect(m_title, SIGNAL(clk_full()), this, SLOT(onFull()));
             connect(m_title, SIGNAL(clk_close()), this, SLOT(onClose()));
+            connect(m_widget, SIGNAL(windowTitleChanged(const QString &)),
+                    m_title, SLOT(setTitle(const QString&)));
+            connect(m_widget, SIGNAL(windowIconChanged(const QIcon &)),
+                    m_title, SLOT(setIcon(const QIcon &)));
+            connect(m_widget, SIGNAL(windowIconTextChanged(const QString &)),
+                    m_title, SLOT(setIcon(const QString &)));
+
         }
         else
         {
@@ -161,7 +168,12 @@ public:
     void getContentsMargins(int *left, int *top, int *right, int *bottom) const
     {
         if (!(left&&top&&right&&bottom)) return;
-        m_widget->QWidget::getContentsMargins(left, top, right, bottom);
+
+        auto  m = m_widget->QWidget::contentsMargins();
+        *left = m.left();
+        *top = m.top();
+        *right = m.right();
+        *bottom = m.bottom();
 
         if (m_widget->isMaximized())
         {
@@ -543,11 +555,6 @@ FLTitle::FLTitle(QWidget *parent) :
     defaultStyle();
 }
 
-void FLTitle::SetIcon()
-{
-
-}
-
 void FLTitle::defaultStyle()
 {
     QString style = \
@@ -583,6 +590,21 @@ QList<QWidget *> FLTitle::ignoreWidgetList()
 void FLTitle::on_actions(FLTitle::TitleAction ta)
 {
     m_actions[ta]->triggered();
+}
+
+void FLTitle::setIcon(const QString &str)
+{
+    m_actions[TAIcon]->setText(str);
+}
+
+void FLTitle::setIcon(const QIcon &icon)
+{
+    m_actions[TAIcon]->setIcon(icon);
+}
+
+void FLTitle::setTitle(const QString &text)
+{
+    title->setText(text);
 }
 
 void FLTitle::initActions()

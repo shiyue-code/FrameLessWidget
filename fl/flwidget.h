@@ -26,8 +26,6 @@ public:
 public:
     FLTitle(QWidget *parent = nullptr);
 
-    void SetIcon();
-
     void defaultStyle();
     QList<QWidget *> ignoreWidgetList();
 
@@ -40,6 +38,10 @@ signals:
 
 public slots:
     void on_actions(TitleAction ta);
+
+    void setIcon(const QString &str);
+    void setIcon(const QIcon &icon);
+    void setTitle(const QString &title);
 
 private:
     void initActions();
