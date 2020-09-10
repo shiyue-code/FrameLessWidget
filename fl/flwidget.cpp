@@ -48,6 +48,7 @@ public:
 public:
     void init()
     {
+        m_widget->installEventFilter(this);
         m_widget->setWindowFlags(m_widget->windowFlags() | Qt::Window | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);
         setResizeable(true);
         setContentsMargins(m_margins);
@@ -310,6 +311,10 @@ public:
             }
             if (0!=*result) return true;
 
+            //if not return false, you can't the menu when full screen
+            if(m_widget->isFullScreen())
+                return false;
+
             //*result still equals 0, that means the cursor locate OUTSIDE the frame area
             //but it may locate in titlebar area
             if (!m_title) return false;
@@ -371,27 +376,10 @@ public:
         }
     }
 
-    void processFullScreen()
-    {
-        if(m_widget->isFullScreen())
-        {
-            m_title->show();
-            m_titleHeight = m_title->height();
-            setContentsMargins(m_margins);
-        }
-        else
-        {
-            m_title->hide();
-            m_titleHeight = 0;
-            setContentsMargins(m_margins);
-        }
+//    void processFullScreen()
+//    {
 
-        if (m_widget->isMaximized())
-        {
-            setContentsMargins(m_margins);
-            m_frames = QMargins();
-        }
-    }
+//    }
 
 public slots:
     void onMaxNormal()
@@ -409,13 +397,49 @@ public slots:
 
     void onFull()
     {
-        processFullScreen();
         m_widget->showFullScreen();
     }
 
     void onClose()
     {
         m_widget->close();
+    }
+
+protected:
+//    bool eventFilter
+    bool eventFilter(QObject *watched, QEvent *evt) override
+    {
+        if(watched != m_widget) return false;
+
+        int type = evt->type();
+        switch( type )
+        {
+        case QEvent::WindowStateChange:
+        {
+            QWindowStateChangeEvent *sevt = static_cast<QWindowStateChangeEvent *>(evt);
+            if(m_widget->isFullScreen())
+            {
+                m_title->hide();
+                m_titleHeight = 0;
+                setContentsMargins(m_margins);
+                if (sevt->oldState() & Qt::WindowMaximized)
+                {
+                    m_frames = QMargins();
+                }
+            }
+            else
+            {
+                m_title->show();
+                m_titleHeight = m_title->height();
+                setContentsMargins(m_margins);
+            }
+
+        }
+            break;
+
+        }
+
+        return QObject::eventFilter(watched, evt);
     }
 
 private slots:
@@ -426,8 +450,6 @@ private slots:
             m_title = Q_NULLPTR;
         }
     }
-
-
 
 private:
     QWidget *m_widget;
@@ -690,14 +712,11 @@ QRect FLWidget::contentsRect() const
 
 void FLWidget::showFullScreen()
 {
-    m_isMaxScreen = isMaximized();
-    m_flHandle->processFullScreen();
     QWidget::showFullScreen();
 }
 
 void FLWidget::restoreScreen()
 {
-    m_flHandle->processFullScreen();
     QWidget::showMaximized();
 }
 
@@ -779,7 +798,6 @@ void FLMainWindow::showFullScreen()
 {
     if(isFullScreen())
         return;
-    m_isMaxScreen = isMaximized();
     m_flHandle->onFull();
 }
 

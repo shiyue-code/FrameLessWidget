@@ -92,7 +92,6 @@ protected:
 
 private:
     FLHandle *m_flHandle;
-    bool m_isMaxScreen;
 };
 
 
@@ -131,7 +130,6 @@ protected:
 
 private:
     FLHandle *m_flHandle;
-    bool m_isMaxScreen;
 };
 
 
